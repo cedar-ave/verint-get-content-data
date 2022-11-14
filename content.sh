@@ -1,34 +1,21 @@
 #! /bin/bash
 
-# This script gets Telligent content type objects through the Telligent API as JSON for analytics purposes.
-# Final JSON files are in `{directory of this script}/api`.
-# Prerequisites: Install `jq` and put your Telligent token in the script.
-  ## How to get token:
-     ### Go to your Telligent avatar (top right) > Settings > API Keys (very bottom) > Manage application API keys > Generate new API key.
-     ### Base-64 encode `apikey:username`.
-
-telligent_token="TOKEN"
+verint_token=""
 
 # Removes files from previous runs without complaining if empty
-rm -r api/* 2>/dev/null
-
-mkdir -p api
+rm -r api
+mkdir api
 cd api
 
-for type in \
-BlogPosts \
+for type in BlogPosts \
+Wikis \
 Ideas \
 MediaPosts \
 Threads \
 Users \
-WikiPages \
 Comments ; do
 
-## Creates new directory for each type
-mkdir $type
-cd $type
-
-# Parts of the API call URL
+echo ">>> Processing $type"
 
 if [[ $type = BlogPosts ]]
 then
@@ -55,9 +42,9 @@ then
 urlPath="users"
 fi
 
-if [[ $type = WikiPages ]]
+if [[ $type = Wikis ]]
 then
-urlPath="wikis/13/pages"
+urlPath="wikis"
 fi
 
 if [[ $type = Comments ]]
@@ -65,24 +52,28 @@ then
 urlPath="comments"
 fi
 
-# Calls URL by 100s until all objects are retrieved (with no duplicates), then breaks
+# Creates new directory for each type
+mkdir -p $type
+cd $type
+
+# Parts of the API call URL
 
 for ((i=0; ; i+=1)); do
 
-    objects=$(curl -H "Rest-User-Token: $telligent_token" -X GET "https://company.telligenthosting.net/api.ashx/v2/$urlPath.json?PageIndex=$i&PageSize=100")
+    objects=$(curl -H "Rest-User-Token: $verint_token" -X GET "https://<your community>.telligenthosting.net/api.ashx/v2/$urlPath.json?PageIndex=$i&PageSize=100")
     echo "$objects" > $i.json
 
     match=`jq '.PageIndex' < $i.json`
 
-    # If PageIndex value and filename don't match, it breaks
+    # If `PageIndex` value and filename don't match, it breaks
     if [[ "$match" != "$i" ]]; then
     rm -f $i.json
     break
     fi <<< "$objects"
 
-    # Without these filters, Users and Ideas don't break and endlessly loop with incrementing PageIndex values. The following filters are separate because Ideas fails at the Users filter.
+    # Without these filters, Users, Ideas, and Comments don't break and endlessly loop with incrementing `PageIndex` values. The following filters are separate because Ideas fails at the Users filter.
 
-    # Breaks Users
+    ## Breaks Users
     if [ $type = "Users" ] && jq -e '.Users | length == 0' >/dev/null; then 
     rm -f $i.json
     break
@@ -102,11 +93,76 @@ for ((i=0; ; i+=1)); do
 
 done
 
-# Assembles all .json files for a type into one
-jq -s . *.json > $type.json
+# Assembles all JSON files for a type into one
+mkdir -p process
 
-mv $type.json ../
+for file in *.json; do
+jq --arg type "$type" '.[$type][]' $file > $file.tmp && mv $file.tmp process/$file
+done
+
+cd process
+jq -s . *.json > ../../$type.json
+
 cd ..
+cd ..
+
+# Validation
+var=$(jq length $type.json)
+echo "$type: $var" >> totals.txt
 
 done
 
+# Wiki pages must be called individually from `Wikis.json` because there is no API call for all wiki pages, only metadata on individual wikis.
+
+mkdir WikiPages
+cd WikiPages
+
+jq -r '.[] | .Id' ../Wikis.json | while read -r wiki; do 
+
+echo ">>> Wiki id: $wiki"
+
+# Fix line endings
+cr=$'\r'
+wiki="${wiki%$cr}"
+
+mkdir $wiki
+cd $wiki
+for ((i=0; ; i+=1)); do
+
+    objects=$(curl -H "Rest-User-Token: $verint_token" -X GET "https://<your community>.telligenthosting.net/api.ashx/v2/wikis/${wiki}/pages.json?PageIndex=$i&PageSize=100")
+    echo "$objects" > $i.json
+
+    match=`jq '.PageIndex' < $i.json`
+
+    # If `PageIndex` value and filename don't match, it breaks
+    if [[ "$match" != "$i" ]]; then
+    rm -f $i.json
+    break
+    fi <<< "$objects"
+
+done
+
+cd ..
+
+# Assembles all wiki pages JSON files into one
+mkdir -p process
+
+for dir in $wiki ; do
+cd $wiki
+for file in *.json; do
+jq '.WikiPages[]' $file > $file.tmp && mv $file.tmp ../process/$wiki-$file
+done
+cd ..
+done
+
+done
+
+cd process
+
+jq -s . *.json > ../../WikiPages.json
+
+var=$(jq length ../../WikiPages.json)
+echo "Wiki pages: $var" >> ../../totals.txt
+
+# Echo counts of content type items for validation
+cat ../../totals.txt

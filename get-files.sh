@@ -1,9 +1,12 @@
-verint_token=""
+#! /bin/bash
+
+communityUrl="" #Example: community.site.com
+verintToken=""
 groupId=""
 
 for ((i=0; ; i+=1)); do
 
-    objects=$(curl -H "Rest-User-Token: $verint_token" -X GET "https://<your community>.telligenthosting.net/api.ashx/v2/media/$groupId/files.json?PageIndex=$i&PageSize=100")
+    objects=$(curl -H "Rest-User-Token: $verintToken" -X GET "https://$communityUrl/api.ashx/v2/media/$groupId/files.json?PageIndex=$i&PageSize=100")
     echo "$objects" > $i.json
     match=`jq '.PageIndex' < $i.json`
 

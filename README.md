@@ -3,6 +3,7 @@
 - [Get items by content type](#get-items-by-content-type) - JSON files of items by content type
 - [Get each thread's tags](#get-each-threads-tags) - CSV file of each thread's tag(s)
 - [Get list of group's files](#get-list-of-groups-files) - CSV file of all files in a group
+- [Get list of group's ideas](#get-list-of-groups-ideas) - CSV file of all ideas filtered by group
 - [Upload files](#upload-files) - Uploads files to a gallery
 
 ## Get items by content type
@@ -62,7 +63,7 @@ User `PageIndexes` are assembled 1,10,11,12, etc.; 2,21,22, etc.; 3,4,5,6, etc.
 
 ## Get list of group's files
 
-`get-files.sh` generates a CSV of files in a group (e.g., PDF files, .zip files, videos)
+`get-files.sh` generates a CSV of files in a group (e.g., PDF files, .zip files, videos).
 
 ### Prerequisites
 - `chocolatey install jq`
@@ -73,6 +74,19 @@ User `PageIndexes` are assembled 1,10,11,12, etc.; 2,21,22, etc.; 3,4,5,6, etc.
     - Base-64 encode `apikey:user.name`
 - Add site URL in `communityUrl` variable (example: `community.site.com`)
 - Add gallery ID in `galleryId` variable (example: `13`)
+
+## Get list of group's ideas
+
+`get-ideas.sh` generates a CSV of ideas filtered by group.
+
+### Prerequisites
+- `chocolatey install jq`
+- Add token in `verintToken` variable
+  - How to get token:
+    - Go to community site avatar (top right) > **Settings** > **API Keys** (very bottom) > **Manage application API keys** > **Generate new API key**
+    - Base-64 encode `apikey:user.name`
+- Add site URL in `communityUrl` variable (example: `community.site.com`)
+- Add group name in `groupName` variable (example: `Product Group`)
 
 ## Upload files
 

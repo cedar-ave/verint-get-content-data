@@ -1,6 +1,10 @@
-# Get data for each content type in Verint
+# Scripts
 
-## `content.sh`
+- [Lists of content types](#content-types) - JSON files of items by content type
+- [List of thread tags](#thread-tags) - CSV file of each thread's tag(s)
+- [List of files in a group](#files) - CSV file of all files in a group
+
+## Lists of content types
 
 `content.sh` creates one JSON file per content type in a Verint instance. The JSON file includes all items of that content type.
 
@@ -44,8 +48,21 @@ User `PageIndexes` are assembled 1,10,11,12, etc.; 2,21,22, etc.; 3,4,5,6, etc.
 - If `Users.json` won't load in Power BI, there may be blanks in Power BI. Use the column filter arrow in **Query Editor** > **Remove Blanks.**
 - Script does not work if a content category has fewer than 100 items due to `rm -f $i.json`.
 
-## `threadTags.sh`
+## List of thread tags
 
 `threadTags.sh` produces a CSV file of each thread's tag(s), if a user has applied a tag to a thread. 
 
 `threadTags.sh` assumes `content.sh` has run and created `api/Threads.json`.
+
+### Prerequisites
+- `chocolatey install jq`
+- Run `content.sh`
+
+## List of files in a group
+
+`files.sh` generates a CSV of files in a group.
+
+### Prerequisites
+- `chocolatey install jq`
+- `npm install json2csv`
+

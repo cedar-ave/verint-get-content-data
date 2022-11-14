@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# [readme](https://github.com/cedar-ave/verint-get-content-data#get-each-threads-tags)
+
 jq -c -r '.[].Threads[] | del(.Body,.Content[])' api/Threads.json | while read i; do
 echo $i > i.json
 

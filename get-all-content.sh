@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# [readme](https://github.com/cedar-ave/verint-get-content-data/blob/main/README.md#get-items-by-content-type)
+
 verintToken=""
 communityUrl="" #Example: community.site.com
 

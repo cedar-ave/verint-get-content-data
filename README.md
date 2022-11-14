@@ -11,7 +11,7 @@
 - Blog posts
 - Comments
 - Ideas
-- Media posts (files, videos)
+- Media posts (PDF files, videos, .zip files)
 - Threads
 - Users
 - Wikis
@@ -60,9 +60,13 @@ User `PageIndexes` are assembled 1,10,11,12, etc.; 2,21,22, etc.; 3,4,5,6, etc.
 
 ## List of files in a group
 
-`files.sh` generates a CSV of files in a group.
+`files.sh` generates a CSV of files in a group (e.g., PDF files, .zip files, videos)
 
 ### Prerequisites
 - `chocolatey install jq`
 - `npm install json2csv`
+- Add token in `verint_token` variable
+  - How to get token:
+    - Go to community site avatar (top right) > **Settings** > **API Keys** (very bottom) > **Manage application API keys** > **Generate new API key**
+    - Base-64 encode `apikey:user.name`
 

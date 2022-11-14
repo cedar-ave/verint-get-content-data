@@ -3,6 +3,7 @@
 - [Get items by content type](#get-items-by-content-type) - JSON files of items by content type
 - [Get each thread's tags](#get-each-threads-tags) - CSV file of each thread's tag(s)
 - [Get list of group's files](#get-list-of-groups-files) - CSV file of all files in a group
+- [Upload files](#upload-files) - Uploads files to a gallery
 
 ## Get items by content type
 

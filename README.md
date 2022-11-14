@@ -1,6 +1,23 @@
 # Get data for each content type in Verint
 
-This script creates a single JSON file for each content type in a Verint instance. A use case is to feed the JSON files into a Power BI report. A benefit of extracting this data programmatically via the REST API is that native Verint reporting requires downloading CSVs manually in the UI.
+This script creates one JSON file per content type in a Verint instance. The JSON file includes all items of that content type.
+
+- Blog posts
+- Comments
+- Ideas
+- Media posts (files, videos)
+- Threads
+- Users
+- Wikis
+- Wiki pages
+
+## Use case
+
+Feed the JSON files into a Power BI report.
+
+## Benefit
+
+A benefit of extracting this data programmatically via the REST API is that native Verint reporting requires downloading CSVs manually in the UI.
 
 ## Prerequisites
 

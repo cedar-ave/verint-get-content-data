@@ -28,10 +28,11 @@ A benefit of extracting this data programmatically via the REST API is that nati
 ### Prerequisites
 
 - `chocolatey install jq`
-- Add token in `verint_token` variable
+- Add token in `verintToken` variable
   - How to get token:
     - Go to community site avatar (top right) > **Settings** > **API Keys** (very bottom) > **Manage application API keys** > **Generate new API key**
     - Base-64 encode `apikey:user.name`
+- Add site URL in `communityUrl` variable (example: `community.site.com`)
 
 ### Notes
 
@@ -65,8 +66,24 @@ User `PageIndexes` are assembled 1,10,11,12, etc.; 2,21,22, etc.; 3,4,5,6, etc.
 ### Prerequisites
 - `chocolatey install jq`
 - `npm install json2csv`
-- Add token in `verint_token` variable
+- Add token in `verintToken` variable
   - How to get token:
     - Go to community site avatar (top right) > **Settings** > **API Keys** (very bottom) > **Manage application API keys** > **Generate new API key**
     - Base-64 encode `apikey:user.name`
+- Add site URL in `communityUrl` variable (example: `community.site.com`)
+- Add gallery ID in `galleryId` variable (example: `13`)
+
+## Upload files
+
+`upload-files.sh` uploads files included in `key.json`.
+
+### Prerequisites
+- `chocolatey install jq`
+- Add token in `verintToken` variable
+  - How to get token:
+    - Go to community site avatar (top right) > **Settings** > **API Keys** (very bottom) > **Manage application API keys** > **Generate new API key**
+    - Base-64 encode `apikey:user.name`
+- Add site URL in `communityUrl` variable (example: `community.site.com`)
+- Add gallery ID in `galleryId` variable (example: `13`)
+- `key.json` file in same directory that includes a list of files to upload with the filename and title (after upload) for each 
 

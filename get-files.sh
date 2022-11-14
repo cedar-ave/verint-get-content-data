@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# [readme](https://github.com/cedar-ave/verint-get-content-data#get-list-of-groups-files)
+
 communityUrl="" #Example: community.site.com
 verintToken=""
 groupId=""

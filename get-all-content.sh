@@ -1,6 +1,7 @@
 #! /bin/bash
 
-verint_token=""
+verintToken=""
+communityUrl="" #Example: community.site.com
 
 # Removes files from previous runs without complaining if empty
 rm -r api
@@ -60,7 +61,7 @@ cd $type
 
 for ((i=0; ; i+=1)); do
 
-    objects=$(curl -H "Rest-User-Token: $verint_token" -X GET "https://<your community>.telligenthosting.net/api.ashx/v2/$urlPath.json?PageIndex=$i&PageSize=100")
+    objects=$(curl -H "Rest-User-Token: $verintToken" -X GET "https://$communityUrl/api.ashx/v2/$urlPath.json?PageIndex=$i&PageSize=100")
     echo "$objects" > $i.json
 
     match=`jq '.PageIndex' < $i.json`
@@ -129,7 +130,7 @@ mkdir $wiki
 cd $wiki
 for ((i=0; ; i+=1)); do
 
-    objects=$(curl -H "Rest-User-Token: $verint_token" -X GET "https://<your community>.telligenthosting.net/api.ashx/v2/wikis/${wiki}/pages.json?PageIndex=$i&PageSize=100")
+    objects=$(curl -H "Rest-User-Token: $verintToken" -X GET "https://$communityUrl/api.ashx/v2/wikis/${wiki}/pages.json?PageIndex=$i&PageSize=100")
     echo "$objects" > $i.json
 
     match=`jq '.PageIndex' < $i.json`

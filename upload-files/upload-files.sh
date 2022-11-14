@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# [readme](https://github.com/cedar-ave/verint-get-content-data/blob/main/get-files.sh)
+
 communityUrl="" #Example: community.site.com
 verintToken=""
 galleryId=""

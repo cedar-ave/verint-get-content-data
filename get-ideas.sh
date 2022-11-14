@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# [readme](https://github.com/cedar-ave/verint-get-content-data#get-list-of-groups-ideas)
+
 verintToken=""
 communityUrl=""
 groupNameA=""
